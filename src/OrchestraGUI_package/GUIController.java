@@ -174,6 +174,7 @@ public class GUIController extends JFrame {
 
         mainMenuGUI = new MainMenuGUI();
         mainMenuGUI.setHeaderOrchestraName(orchestra.getSettings().getName());
+        mainMenuGUI.getPlayButton().addActionListener(e -> { new PlayTogetherGUI(); });
         mainMenuGUI.getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
         mainMenuGUI.getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
         mainMenuGUI.getSettingsButton().addActionListener(e -> { openSettings(); });
@@ -194,8 +195,7 @@ public class GUIController extends JFrame {
     }
 
     private void initWindow() {
-        setSize(800, 600); // Размер окна
-        setResizable(false); // Неизменяемый размер окна
+        setSize(950, 750); // Размер окна
         setLocationRelativeTo(null); // Чтобы окно открылось в центре экрана
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Завершение программы при закрытии окна
         setVisible(true); // Включаем окно

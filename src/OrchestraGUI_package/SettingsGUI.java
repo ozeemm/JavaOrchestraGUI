@@ -10,8 +10,6 @@ public class SettingsGUI extends JPanel {
     private JPanel headerPanel;
     private JPanel orchestraNamePanel;
     private JPanel noteFormatPanel;
-    private JPanel minSongSoundsPanel;
-    private JPanel maxSongSoundsPanel;
     private JPanel songSoundsDelayPanel;
     private JPanel buttonsPanel;
 
@@ -19,13 +17,9 @@ public class SettingsGUI extends JPanel {
     private JLabel orchestraNameLabel;
     private JLabel noteFormatLabel;
 
-    private JLabel minSongSoundsLabel;
-    private JLabel maxSongSoundsLabel;
     private JLabel songSoundsDelayLabel;
 
     private JTextField orchestraNameInput;
-    private JTextField minSongSoundsInput;
-    private JTextField maxSongSoundsInput;
     private JTextField songSoundsDelayInput;
 
     private JComboBox<String> noteFormatInput;
@@ -42,8 +36,6 @@ public class SettingsGUI extends JPanel {
         headerPanel = new JPanel();
         orchestraNamePanel = new JPanel();
         noteFormatPanel = new JPanel();
-        minSongSoundsPanel = new JPanel();
-        maxSongSoundsPanel = new JPanel();
         songSoundsDelayPanel = new JPanel();
         buttonsPanel = new JPanel();
 
@@ -60,16 +52,6 @@ public class SettingsGUI extends JPanel {
         noteFormatInput = new JComboBox(new String[] {"CDEFGAB", "До-Ре-Ми-Фа-Соль-Ля-Си"});
         noteFormatPanel.add(noteFormatLabel);
         noteFormatPanel.add(noteFormatInput);
-
-        minSongSoundsLabel = new JLabel("Минимальное количество звуков в песне:");
-        minSongSoundsInput = new JTextField(2);
-        minSongSoundsPanel.add(minSongSoundsLabel);
-        minSongSoundsPanel.add(minSongSoundsInput);
-
-        maxSongSoundsLabel = new JLabel("Максимальное количество звуков в песне:");
-        maxSongSoundsInput = new JTextField(2);
-        maxSongSoundsPanel.add(maxSongSoundsLabel);
-        maxSongSoundsPanel.add(maxSongSoundsInput);
 
         songSoundsDelayLabel = new JLabel("Задержка между звуками в песне (в миллисекундах):");
         songSoundsDelayInput = new JTextField(3);
@@ -88,8 +70,6 @@ public class SettingsGUI extends JPanel {
         this.add(headerPanel);
         this.add(orchestraNamePanel);
         this.add(noteFormatPanel);
-        this.add(minSongSoundsPanel);
-        this.add(maxSongSoundsPanel);
         this.add(songSoundsDelayPanel);
         this.add(buttonsPanel);
     }
@@ -104,8 +84,6 @@ public class SettingsGUI extends JPanel {
         orchestraSettings = settings;
         orchestraNameInput.setText(settings.getName());
         noteFormatInput.setSelectedIndex(settings.getIsRuNotes() ? 1 : 0);
-        minSongSoundsInput.setText(Integer.toString(settings.getMinSongSounds()));
-        maxSongSoundsInput.setText(Integer.toString(settings.getMaxSongSounds()));
         songSoundsDelayInput.setText(Integer.toString(settings.getSongSoundsDelay()));
     }
 
@@ -118,8 +96,6 @@ public class SettingsGUI extends JPanel {
 
         orchestraSettings.setName(orchestraNameInput.getText());
         orchestraSettings.setIsRuNotes(noteFormatInput.getSelectedIndex() == 1);
-        orchestraSettings.setMinSongSounds(Integer.parseInt(minSongSoundsInput.getText()));
-        orchestraSettings.setMaxSongSounds(Integer.parseInt(maxSongSoundsInput.getText()));
         orchestraSettings.setSongSoundsDelay(Integer.parseInt(songSoundsDelayInput.getText()));
         GUIController.getOrchestra().setSettings(orchestraSettings);
     }

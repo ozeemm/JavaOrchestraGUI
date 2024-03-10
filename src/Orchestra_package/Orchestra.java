@@ -35,13 +35,6 @@ public class Orchestra {
     public void addMusician(Musician musician){ musicians.add(musician); }
     public void deleteMusicican(Musician musician){ musicians.remove(musician); }
 
-    public int getRandomSongSoundsNum(){
-        Random rand = new Random();
-        if(orchestraSettings.getMaxSongSounds() == orchestraSettings.getMinSongSounds())
-            return orchestraSettings.getMaxSongSounds();
-        else
-            return rand.nextInt(orchestraSettings.getMaxSongSounds() - orchestraSettings.getMinSongSounds()) + orchestraSettings.getMinSongSounds() + 1;
-    }
     // Сыграть звук песни
     public String playSound(){
         Random random = new Random();
