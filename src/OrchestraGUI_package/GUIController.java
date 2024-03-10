@@ -11,7 +11,8 @@ public class GUIController extends JFrame {
     private static Orchestra orchestra;
     private MainMenuGUI mainMenuGUI;
     private SettingsGUI settingsGUI;
-    private InfoGUI infoGUI;
+    private InfoGUI instrumentsInfoGUI;
+    private InfoGUI musiciansInfoGUI;
 
     public static Orchestra getOrchestra(){ return orchestra; }
 
@@ -172,16 +173,21 @@ public class GUIController extends JFrame {
         initWindow();
 
         mainMenuGUI = new MainMenuGUI();
-        mainMenuGUI.getInstrumentsButton().addActionListener(e -> {openInstrumentsInfo();});
-        mainMenuGUI.getSettingsButton().addActionListener(e -> {openSettings();});
+        mainMenuGUI.setHeaderOrchestraName(orchestra.getSettings().getName());
+        mainMenuGUI.getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
+        mainMenuGUI.getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
+        mainMenuGUI.getSettingsButton().addActionListener(e -> { openSettings(); });
         this.add(mainMenuGUI);
 
         settingsGUI = new SettingsGUI();
         settingsGUI.getBackButton().addActionListener(e -> {closeSettings();});
-        settingsGUI.getSaveButton().addActionListener(e -> {closeSettings();});
+        //settingsGUI.getSaveButton().addActionListener(e -> {closeSettings();});
 
-        infoGUI = new InfoGUI();
-        infoGUI.getBackButton().addActionListener(e -> {closeInstrumentsInfo();});
+        instrumentsInfoGUI = new InfoGUI(true);
+        instrumentsInfoGUI.getBackButton().addActionListener(e -> { closeInstrumentsInfo(); });
+
+        musiciansInfoGUI = new InfoGUI(false);
+        musiciansInfoGUI.getBackButton().addActionListener(e -> { closeMusiciansInfo(); });
 
         this.revalidate();
         this.repaint();
@@ -207,7 +213,22 @@ public class GUIController extends JFrame {
         switchPanels(settingsGUI, mainMenuGUI);
         settingsGUI.showSettingsValues(orchestra.getSettings());
     }
-    public void closeSettings(){ switchPanels(mainMenuGUI, settingsGUI); }
-    public void openInstrumentsInfo(){ switchPanels(infoGUI, mainMenuGUI); }
-    public void closeInstrumentsInfo(){ switchPanels(mainMenuGUI, infoGUI); }
+    public void closeSettings(){
+        switchPanels(mainMenuGUI, settingsGUI);
+        mainMenuGUI.setHeaderOrchestraName(orchestra.getSettings().getName());
+    }
+    public void openInstrumentsInfo() {
+        switchPanels(instrumentsInfoGUI, mainMenuGUI);
+        instrumentsInfoGUI.onInstrumentsInfoOpened();
+    }
+    public void closeInstrumentsInfo(){ switchPanels(mainMenuGUI, instrumentsInfoGUI); }
+
+    public void openMusiciansInfo(){
+        switchPanels(musiciansInfoGUI, mainMenuGUI);
+        musiciansInfoGUI.onMusiciansInfoOpened();
+    }
+
+    public void closeMusiciansInfo(){
+        switchPanels(mainMenuGUI, musiciansInfoGUI);
+    }
 }

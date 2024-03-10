@@ -1,6 +1,9 @@
 package OrchestraGUI_package;
 
+import Orchestra_package.*;
+
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class AddInstrumentGUI extends JFrame {
@@ -8,7 +11,7 @@ public class AddInstrumentGUI extends JFrame {
     private int instrumentType;
     private ArrayList<JComponent> inputComponents;
     private void initWindow(){
-        setSize(400, 400);
+        setSize(475, 400);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -18,7 +21,7 @@ public class AddInstrumentGUI extends JFrame {
     }
 
     public AddInstrumentGUI(int instrumentType){
-        super("Добавление инструмента");
+        super("Добавление");
         initWindow();
         this.instrumentType = instrumentType;
         inputComponents = new ArrayList<JComponent>();
@@ -53,13 +56,17 @@ public class AddInstrumentGUI extends JFrame {
             case 3: // Безнотные
                 header.setText("Добавление безнотного инструмента");
                 initMusicInstrument();
-                initNonNoteInstrumentInputElements(new String[]{ "Бочка", "Малый", "Открытый хэт", "Закрытый хэт", "Том-том" });
+                initNonNoteInstrumentInputElements();
+                break;
+            case 4: // Музыкант
+                header.setText("Добавление музыканта");
+                initMusicianInputElements();
                 break;
         }
 
         JButton addButton = new JButton("Добавить");
         addButton.setAlignmentX(CENTER_ALIGNMENT);
-        addButton.addActionListener(e -> { buttn(); });
+        addButton.addActionListener(e -> { AddButtonClicked(); });
         JButton closeButton = new JButton("Закрыть");
         closeButton.setAlignmentX(CENTER_ALIGNMENT);
         closeButton.addActionListener(e -> { dispose(); });
@@ -182,20 +189,139 @@ public class AddInstrumentGUI extends JFrame {
         panel.add(typePanel);
         panel.add(chancePanel);
     }
-    private void initNonNoteInstrumentInputElements(String[] instruments) {
+    private void initNonNoteInstrumentInputElements() {
         JLabel label = new JLabel("Звуки инструмента");
         label.setAlignmentX(CENTER_ALIGNMENT);
         panel.add(label);
 
-        for(String instrument : instruments){
+        JPanel soundsPanel = new JPanel(new GridLayout(7, 3));
+        for(String instrument : NonNoteSound.getPossibleSounds()){
             JCheckBox checkBox = new JCheckBox(instrument);
-            checkBox.setAlignmentX(LEFT_ALIGNMENT);
+            //checkBox.setAlignmentX(LEFT_ALIGNMENT);
             inputComponents.add(checkBox);
-            panel.add(checkBox);
+            //panel.add(checkBox);
+            soundsPanel.add(checkBox);
         }
+        panel.add(soundsPanel);
+    }
+    private void initMusicianInputElements(){
+        JPanel namePanel = new JPanel();
+        JPanel agePanel = new JPanel();
+        JPanel joiningYearPanel = new JPanel();
+        JPanel instrumentPanel = new JPanel();
+
+        JLabel nameLabel = new JLabel("Имя:");
+        JTextField nameInput = new JTextField(10);
+        inputComponents.add(nameInput);
+        namePanel.add(nameLabel);
+        namePanel.add(nameInput);
+
+        JLabel ageLabel = new JLabel("Возраст:");
+        JTextField ageInput = new JTextField(4);
+        inputComponents.add(ageInput);
+        agePanel.add(ageLabel);
+        agePanel.add(ageInput);
+
+        JLabel joiningYearLabel = new JLabel("Год вступления:");
+        JTextField joiningYearInput = new JTextField(4);
+        inputComponents.add(joiningYearInput);
+        joiningYearPanel.add(joiningYearLabel);
+        joiningYearPanel.add(joiningYearInput);
+
+        JLabel instrumentLabel = new JLabel("Инструмент:");
+        JComboBox<String> instrumentInput = new JComboBox<String>();
+        for(MusicInstrument instrument : GUIController.getOrchestra().getInstruments()){
+            instrumentInput.addItem(instrument.getName());
+        }
+        inputComponents.add(instrumentInput);
+        instrumentPanel.add(instrumentLabel);
+        instrumentPanel.add(instrumentInput);
+
+        panel.add(namePanel);
+        panel.add(agePanel);
+        panel.add(joiningYearPanel);
+        panel.add(instrumentPanel);
     }
 
-    private void buttn(){
+    private void AddButtonClicked(){
+        if(instrumentType >= 0 && instrumentType <= 2){
+            JTextField nameInput = (JTextField)inputComponents.get(0);
+            JCheckBox isAcousticInput = (JCheckBox)inputComponents.get(1);
+            JTextField minNoteInput = (JTextField) inputComponents.get(2);
+            Note minNote = new Note(minNoteInput.getText().split(" ")[0], Integer.parseInt(minNoteInput.getText().split(" ")[1]));
+            JTextField maxNoteInput = (JTextField) inputComponents.get(3);
+            Note maxNote = new Note(maxNoteInput.getText().split(" ")[0], Integer.parseInt(maxNoteInput.getText().split(" ")[1]));
+            switch (instrumentType){
+                case 0:
+                    StringedInstrument stringedInstrument = new StringedInstrument();
+                    stringedInstrument.setName(nameInput.getText());
+                    stringedInstrument.setIsAcoustic(isAcousticInput.isSelected());
+                    stringedInstrument.setNoteRange(minNote, maxNote);
+                    JTextField fretsInput = (JTextField)inputComponents.get(4);
+                    JTextField stringsInput = (JTextField)inputComponents.get(5);
+                    JCheckBox isBowInput = (JCheckBox) inputComponents.get(6);
+                    JTextField stringBreakChanceInput = (JTextField)inputComponents.get(7);
+                    stringedInstrument.setFrets(Integer.parseInt(fretsInput.getText()));
+                    stringedInstrument.setStrings(Integer.parseInt(stringsInput.getText()));
+                    stringedInstrument.setIsBow(isBowInput.isSelected());
+                    stringedInstrument.setStringBreakChance(Float.parseFloat(stringBreakChanceInput.getText()));
+                    GUIController.getOrchestra().addInstrument(stringedInstrument);
+                    break;
+                case 1:
+                    KeyboardInstrument keyboardInstrument = new KeyboardInstrument();
+                    keyboardInstrument.setName(nameInput.getText());
+                    keyboardInstrument.setIsAcoustic(isAcousticInput.isSelected());
+                    keyboardInstrument.setNoteRange(minNote, maxNote);
+                    JTextField keysInput = (JTextField)inputComponents.get(4);
+                    keyboardInstrument.setKeys(Integer.parseInt(keysInput.getText()));
+                    GUIController.getOrchestra().addInstrument(keyboardInstrument);
+                    break;
+                case 2:
+                    WindInstrument windInstrument = new WindInstrument();
+                    windInstrument.setName(nameInput.getText());
+                    windInstrument.setIsAcoustic(isAcousticInput.isSelected());
+                    windInstrument.setNoteRange(minNote, maxNote);
+                    JTextField materialInput = (JTextField)inputComponents.get(4);
+                    JTextField typeInput = (JTextField)inputComponents.get(5);
+                    JTextField chanceInput = (JTextField)inputComponents.get(6);
+                    windInstrument.setMaterial(materialInput.getText());
+                    windInstrument.setType(typeInput.getText());
+                    windInstrument.setNotEnoughBreathChance(Float.parseFloat(chanceInput.getText()));
+                    GUIController.getOrchestra().addInstrument(windInstrument);
+                    break;
+            }
+        }
+        else{
+            switch (instrumentType){
+                case 3:
+                    JTextField nameInput = (JTextField)inputComponents.get(0);
+                    JCheckBox isAcousticInput = (JCheckBox)inputComponents.get(1);
+                    NonNoteInstrument instrument = new NonNoteInstrument();
+                    instrument.setName(nameInput.getText());
+                    instrument.setIsAcoustic(isAcousticInput.isSelected());
+                    for(int i = 0; i < NonNoteSound.getPossibleSounds().size(); i++){
+                        JCheckBox soundInput = (JCheckBox)inputComponents.get(i + 2);
+                        if(soundInput.isSelected())
+                            instrument.addSound(new NonNoteSound(NonNoteSound.getPossibleSounds().get(i)));
+                    }
+                    GUIController.getOrchestra().addInstrument(instrument);
+                    break;
+
+                case 4:
+                    Musician musician = new Musician();
+                    JTextField musicianNameInput = (JTextField)inputComponents.get(0);
+                    JTextField musicianAgeInput = (JTextField)inputComponents.get(1);
+                    JTextField musicianJoiningYearInput = (JTextField)inputComponents.get(2);
+                    JComboBox<String> musicianInstrumentInput = (JComboBox<String>)inputComponents.get(3);
+                    musician.setName(musicianNameInput.getText());
+                    musician.setAge(Integer.parseInt(musicianAgeInput.getText()));
+                    musician.setJoiningOrchestraYear(Integer.parseInt(musicianJoiningYearInput.getText()));
+                    musician.setInstrument(GUIController.getOrchestra().getInstruments().get(musicianInstrumentInput.getSelectedIndex()));
+                    GUIController.getOrchestra().addMusician(musician);
+                    break;
+            }
+        }
+        dispose();
         System.out.println(inputComponents.size());
     }
 }

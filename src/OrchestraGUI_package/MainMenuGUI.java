@@ -15,11 +15,8 @@ public class MainMenuGUI extends JPanel {
     private JButton settingsButton;
     private JButton exitButton;
     public MainMenuGUI() {
-        //this.setBackground(Color.ORANGE);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         header = new JLabel();
-        header.setText("Оркестр \"Название\"");
         header.setFont(new Font("Arial", Font.BOLD, 50));
         header.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -42,7 +39,7 @@ public class MainMenuGUI extends JPanel {
         exitButton = new JButton("Выход");
         exitButton.setFont(buttonsFont);
         exitButton.setAlignmentX(CENTER_ALIGNMENT);
-        //exitButton.addActionListener(e -> { System.exit(0); }); // Функция кнопки
+        exitButton.addActionListener(e -> { System.exit(0); });
 
         this.add(Box.createVerticalStrut(buttonsSpacing * 2));
         this.add(header);
@@ -56,6 +53,10 @@ public class MainMenuGUI extends JPanel {
         this.add(settingsButton);
         this.add(Box.createVerticalStrut(buttonsSpacing));
         this.add(exitButton);
+    }
+
+    public void setHeaderOrchestraName(String name){
+        header.setText("Оркестр \"" + name + "\"");
     }
 
     public JButton getPlayButton(){
