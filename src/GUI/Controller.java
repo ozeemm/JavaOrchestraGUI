@@ -1,20 +1,17 @@
-package OrchestraGUI_package;
+package GUI;
 
-import Orchestra_package.*;
+import Logic.*;
 
 import javax.swing.*;
-import javax.swing.ImageIcon; // Чтобы добавить иконку
 import java.util.ArrayList;
 
-public class GUIController extends JFrame {
-
-    private static Orchestra orchestra;
-    private MainMenuGUI mainMenuGUI;
-    private SettingsGUI settingsGUI;
-    private InfoGUI instrumentsInfoGUI;
-    private InfoGUI musiciansInfoGUI;
-
-    public static Orchestra getOrchestra(){ return orchestra; }
+public class Controller {
+    private Orchestra orchestra;
+    private MainFrame mainFrame;
+    private MainMenuPanel mainMenuPanel;
+    private SettingsPanel settingsPanel;
+    private InfoPanel instrumentsInfoPanel;
+    private InfoPanel musiciansInfoPanel;
 
     private void initTestData(){
         orchestra = new Orchestra();
@@ -166,69 +163,57 @@ public class GUIController extends JFrame {
         musician.setInstrument(orchestra.getInstruments().get(3)); // Рояль
         orchestra.addMusician(musician);
     }
-
-    public GUIController(){
-        super("Pocket Orchestra"); // Окно с названием
+    public void Start(){
         initTestData();
-        initWindow();
+        
+        mainFrame = new MainFrame();
+        mainFrame.setOrchestra(orchestra);
 
-        mainMenuGUI = new MainMenuGUI();
-        mainMenuGUI.setHeaderOrchestraName(orchestra.getSettings().getName());
-        mainMenuGUI.getPlayButton().addActionListener(e -> { new PlayTogetherGUI(); });
-        mainMenuGUI.getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
-        mainMenuGUI.getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
-        mainMenuGUI.getSettingsButton().addActionListener(e -> { openSettings(); });
-        this.add(mainMenuGUI);
+        mainMenuPanel = new MainMenuPanel();
+        mainMenuPanel.setHeaderOrchestraName(orchestra.getSettings().getName());
+        mainMenuPanel.getPlayButton().addActionListener(e -> { new PlayTogetherFrame(); });
+        mainMenuPanel.getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
+        mainMenuPanel.getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
+        mainMenuPanel.getSettingsButton().addActionListener(e -> { openSettings(); });
 
-        settingsGUI = new SettingsGUI();
-        settingsGUI.getBackButton().addActionListener(e -> {closeSettings();});
-        //settingsGUI.getSaveButton().addActionListener(e -> {closeSettings();});
+        settingsPanel = new SettingsPanel();
+        settingsPanel.getBackButton().addActionListener(e -> {closeSettings();});
 
-        instrumentsInfoGUI = new InfoGUI(true);
-        instrumentsInfoGUI.getBackButton().addActionListener(e -> { closeInstrumentsInfo(); });
+        instrumentsInfoPanel = new InfoPanel(true);
+        instrumentsInfoPanel.getBackButton().addActionListener(e -> { closeInstrumentsInfo(); });
 
-        musiciansInfoGUI = new InfoGUI(false);
-        musiciansInfoGUI.getBackButton().addActionListener(e -> { closeMusiciansInfo(); });
+        musiciansInfoPanel = new InfoPanel(false);
+        musiciansInfoPanel.getBackButton().addActionListener(e -> { closeMusiciansInfo(); });
 
-        this.revalidate();
-        this.repaint();
+        mainFrame.add(mainMenuPanel);
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 
-    private void initWindow() {
-        setSize(950, 750); // Размер окна
-        setLocationRelativeTo(null); // Чтобы окно открылось в центре экрана
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Завершение программы при закрытии окна
-        setVisible(true); // Включаем окно
-        ImageIcon icon = new ImageIcon("./img/icon2.png");
-        this.setIconImage(icon.getImage()); // Иконка окна
-    }
-    private void switchPanels(JPanel panelToOpen, JPanel panelToClose){
-        this.remove(panelToClose);
-        this.add(panelToOpen);
-
-        this.revalidate();
-        this.repaint();
+    private void switchPanels(JFrame frame, JPanel panelToOpen, JPanel panelToClose){
+        frame.remove(panelToClose);
+        frame.add(panelToOpen);
+        frame.revalidate();
+        frame.repaint();
     }
     public void openSettings(){
-        switchPanels(settingsGUI, mainMenuGUI);
-        settingsGUI.showSettingsValues(orchestra.getSettings());
+        switchPanels(mainFrame, settingsPanel, mainMenuPanel);
+        settingsPanel.showSettingsValues(orchestra.getSettings());
     }
     public void closeSettings(){
-        switchPanels(mainMenuGUI, settingsGUI);
-        mainMenuGUI.setHeaderOrchestraName(orchestra.getSettings().getName());
+        switchPanels(mainFrame, mainMenuPanel, settingsPanel);
+        mainMenuPanel.setHeaderOrchestraName(orchestra.getSettings().getName());
     }
     public void openInstrumentsInfo() {
-        switchPanels(instrumentsInfoGUI, mainMenuGUI);
-        instrumentsInfoGUI.onInstrumentsInfoOpened();
+        switchPanels(mainFrame, instrumentsInfoPanel, mainMenuPanel);
+        instrumentsInfoPanel.onInstrumentsInfoOpened();
     }
-    public void closeInstrumentsInfo(){ switchPanels(mainMenuGUI, instrumentsInfoGUI); }
-
+    public void closeInstrumentsInfo(){ switchPanels(mainFrame, mainMenuPanel, instrumentsInfoPanel); }
     public void openMusiciansInfo(){
-        switchPanels(musiciansInfoGUI, mainMenuGUI);
-        musiciansInfoGUI.onMusiciansInfoOpened();
+        switchPanels(mainFrame, musiciansInfoPanel, mainMenuPanel);
+        musiciansInfoPanel.onMusiciansInfoOpened();
     }
-
     public void closeMusiciansInfo(){
-        switchPanels(mainMenuGUI, musiciansInfoGUI);
+        switchPanels(mainFrame, mainMenuPanel, musiciansInfoPanel);
     }
 }

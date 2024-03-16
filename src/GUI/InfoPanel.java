@@ -1,18 +1,15 @@
-package OrchestraGUI_package;
+package GUI;
 
-import Orchestra_package.*;
+import Logic.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Console;
 import java.util.ArrayList;
 
 // Класс для информации об инструментах/музыкантах
-public class InfoGUI extends JPanel {
+public class InfoPanel extends JPanel {
     private JPanel leftPanel;
-
     private JPanel rightPanel;
 
     private JPanel headerPanel;
@@ -33,7 +30,6 @@ public class InfoGUI extends JPanel {
     private JTable infoTable;
 
     private JButton playSoundButton;
-
     private JLabel playSoundLabel;
 
     private ArrayList<MusicInstrument> shownInstruments;
@@ -45,7 +41,7 @@ public class InfoGUI extends JPanel {
     private int tableRows = 12;
     private int tableCols = 2;
 
-    public InfoGUI(boolean isInstrumentsInfo){
+    public InfoPanel(boolean isInstrumentsInfo){
         leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         rightPanel = new JPanel();
@@ -81,6 +77,22 @@ public class InfoGUI extends JPanel {
         if(!isInstrumentsInfo)
             tableRows = 4;
         infoTable = new JTable(tableRows, tableCols);
+        /*infoTable.setModel(new AbstractTableModel() {
+            @Override
+            public int getRowCount() {
+                return 0;
+            }
+
+            @Override
+            public int getColumnCount() {
+                return 0;
+            }
+
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                return null;
+            }
+        }); */
         infoTable.setFont(new Font("Arial", Font.PLAIN, 17));
         infoTable.setRowHeight(40);
         infoTable.getColumnModel().getColumn(0).setMinWidth(200);
@@ -141,7 +153,7 @@ public class InfoGUI extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownInstruments = new ArrayList<MusicInstrument>();
 
-        for(MusicInstrument instrument : GUIController.getOrchestra().getInstruments()){
+        for(MusicInstrument instrument : MainFrame.getOrchestra().getInstruments()){
             switch (currentInstrumentType){
                 case 0: // Струнные
                     if(instrument instanceof StringedInstrument){
@@ -189,7 +201,7 @@ public class InfoGUI extends JPanel {
         row++;
         if(currentInstrument instanceof NoteInstrument){
             NoteInstrument noteInstrument = (NoteInstrument) currentInstrument;
-            boolean isRuNotes = GUIController.getOrchestra().getSettings().getIsRuNotes();
+            boolean isRuNotes = MainFrame.getOrchestra().getSettings().getIsRuNotes();
             tableData.add(new ArrayList<String>());
             tableData.get(row).add("Минимальная нота");
             tableData.get(row).add(isRuNotes ? noteInstrument.getMinNote().toRuString() : noteInstrument.getMinNote().toString());
@@ -296,7 +308,7 @@ public class InfoGUI extends JPanel {
         clearPlaySoundLabel();
     }
     private void addInstrumentClicked(){
-        AddInstrumentGUI gui = new AddInstrumentGUI(instrumentTypeChoose.getSelectedIndex());
+        AddInstrumentFrame gui = new AddInstrumentFrame(instrumentTypeChoose.getSelectedIndex());
         gui.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -305,7 +317,7 @@ public class InfoGUI extends JPanel {
         });
     }
     private void deleteInstrumentClicked(){
-        GUIController.getOrchestra().deleteInstrument(currentInstrument);
+        MainFrame.getOrchestra().deleteInstrument(currentInstrument);
         onInstrumentTypeChange();
     }
 
@@ -330,7 +342,7 @@ public class InfoGUI extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownMusicians = new ArrayList<Musician>();
 
-        for(Musician musician : GUIController.getOrchestra().getMusicians()){
+        for(Musician musician : MainFrame.getOrchestra().getMusicians()){
             switch(currentInstrumentType){
                 case 0: // Все
                     shownMusicians.add(musician);
@@ -382,7 +394,7 @@ public class InfoGUI extends JPanel {
         clearPlaySoundLabel();
     }
     private void addMusicianClicked(){
-        AddInstrumentGUI gui = new AddInstrumentGUI(4);
+        AddInstrumentFrame gui = new AddInstrumentFrame(4);
         gui.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -390,14 +402,13 @@ public class InfoGUI extends JPanel {
             }
         });
     }
-
     private void deleteMusicianClicked(){
-        GUIController.getOrchestra().deleteMusicican(currentMusician);
+        MainFrame.getOrchestra().deleteMusicican(currentMusician);
         onMusiciansInstrumentTypeChange();
     }
 
     public void playInstrumentButtonClicked(){
-        String sound = currentInstrument.orchestraPlay(GUIController.getOrchestra().getSettings().getIsRuNotes());
+        String sound = currentInstrument.orchestraPlay(MainFrame.getOrchestra().getSettings().getIsRuNotes());
         if(sound != null){
             if(currentInstrument instanceof NoteInstrument)
                 playSoundLabel.setText("Сыграна нота " + sound + " октавы");
@@ -406,7 +417,6 @@ public class InfoGUI extends JPanel {
         }
         else{ playSoundLabel.setText("Не удалось сыграть на инструменте"); }
     }
-
     private void clearPlaySoundLabel(){
         if(playSoundLabel != null)
             playSoundLabel.setText("");
@@ -418,7 +428,6 @@ public class InfoGUI extends JPanel {
             instrumentTypeChoose.addItem(val);
         }
     }
-
     public JButton getBackButton(){
         return backButton;
     }

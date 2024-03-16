@@ -1,4 +1,4 @@
-package Orchestra_package;
+package Logic;
 
 public abstract class NoteInstrument extends MusicInstrument{
     private Note minNote;

@@ -1,12 +1,11 @@
-package OrchestraGUI_package;
+package GUI;
 
-import Orchestra_package.Orchestra;
-import Orchestra_package.OrchestraSettings;
+import Logic.OrchestraSettings;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SettingsGUI extends JPanel {
+public class SettingsPanel extends JPanel {
     private JPanel headerPanel;
     private JPanel orchestraNamePanel;
     private JPanel noteFormatPanel;
@@ -30,7 +29,7 @@ public class SettingsGUI extends JPanel {
 
     private OrchestraSettings orchestraSettings;
 
-    public SettingsGUI(){
+    public SettingsPanel(){
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         headerPanel = new JPanel();
@@ -97,6 +96,6 @@ public class SettingsGUI extends JPanel {
         orchestraSettings.setName(orchestraNameInput.getText());
         orchestraSettings.setIsRuNotes(noteFormatInput.getSelectedIndex() == 1);
         orchestraSettings.setSongSoundsDelay(Integer.parseInt(songSoundsDelayInput.getText()));
-        GUIController.getOrchestra().setSettings(orchestraSettings);
+        MainFrame.getOrchestra().setSettings(orchestraSettings);
     }
 }

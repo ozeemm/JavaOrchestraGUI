@@ -1,11 +1,11 @@
-package OrchestraGUI_package;
+package GUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PlayTogetherGUI extends JFrame {
+public class PlayTogetherFrame extends JFrame {
     private JLabel playingLabel;
     private void initWindow(){
         setSize(650, 350);
@@ -16,7 +16,7 @@ public class PlayTogetherGUI extends JFrame {
         ImageIcon icon = new ImageIcon("./img/icon2.png");
         this.setIconImage(icon.getImage());
     }
-    public PlayTogetherGUI(){
+    public PlayTogetherFrame(){
         super("Сыграть всем оркестром");
         initWindow();
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
@@ -39,12 +39,11 @@ public class PlayTogetherGUI extends JFrame {
 
         orchestraPlay();
     }
-
     private void orchestraPlay(){
-        Timer timer = new Timer(GUIController.getOrchestra().getSettings().getSongSoundsDelay(), new ActionListener() {
+        Timer timer = new Timer(MainFrame.getOrchestra().getSettings().getSongSoundsDelay(), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playingLabel.setText(GUIController.getOrchestra().playSound());
+                playingLabel.setText(MainFrame.getOrchestra().playSound());
             }
         });
 

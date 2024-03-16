@@ -1,9 +1,9 @@
-package OrchestraGUI_package;
+package GUI;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenuGUI extends JPanel {
+public class MainMenuPanel extends JPanel {
     
     private final Font buttonsFont = new Font("Arial", Font.PLAIN, 27);
     private final int buttonsSpacing = 25;
@@ -15,7 +15,8 @@ public class MainMenuGUI extends JPanel {
     private JButton instrumentsButton;
     private JButton settingsButton;
     private JButton exitButton;
-    public MainMenuGUI() {
+
+    public MainMenuPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         header = new JLabel();
         header.setFont(new Font("Arial", Font.BOLD, 50));
@@ -55,37 +56,22 @@ public class MainMenuGUI extends JPanel {
         this.add(Box.createVerticalStrut(buttonsSpacing * 2));
         this.add(buttonsPanel);
         this.add(Box.createVerticalStrut(buttonsSpacing));
-        /*this.add(playButton);
-        this.add(Box.createVerticalStrut(buttonsSpacing));
-        this.add(musiciansButton);
-        this.add(Box.createVerticalStrut(buttonsSpacing));
-        this.add(instrumentsButton);
-        this.add(Box.createVerticalStrut(buttonsSpacing));
-        this.add(settingsButton);
-        this.add(Box.createVerticalStrut(buttonsSpacing));
-        this.add(exitButton);*/
     }
-
     public void setHeaderOrchestraName(String name){
         header.setText("Оркестр \"" + name + "\"");
     }
-
     public JButton getPlayButton(){
         return playButton;
     }
-
     public JButton getInstrumentsButton(){
         return instrumentsButton;
     }
-
     public JButton getMusiciansButton(){
         return musiciansButton;
     }
-
     public JButton getSettingsButton(){
         return settingsButton;
     }
-
     public JButton getExitButton(){
         return exitButton;
     }

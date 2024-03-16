@@ -1,7 +1,9 @@
-import OrchestraGUI_package.GUIController;
+import GUI.Controller;
 
 public class Main {
     public static void main(String[] args) {
-        new GUIController();
+        //new MainFrameGUI();
+        Controller c = new Controller();
+        c.Start();
     }
 }

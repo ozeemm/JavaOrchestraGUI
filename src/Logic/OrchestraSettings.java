@@ -1,4 +1,4 @@
-package Orchestra_package;
+package Logic;
 
 public class OrchestraSettings {
     private String name = "Солнышко";
