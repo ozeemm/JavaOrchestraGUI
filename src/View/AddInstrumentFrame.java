@@ -1,6 +1,7 @@
-package GUI;
+package View;
 
-import Logic.*;
+import Model.*;
+import Controller.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -230,7 +231,7 @@ public class AddInstrumentFrame extends JFrame {
 
         JLabel instrumentLabel = new JLabel("Инструмент:");
         JComboBox<String> instrumentInput = new JComboBox<String>();
-        for(MusicInstrument instrument : MainFrame.getOrchestra().getInstruments()){
+        for(MusicInstrument instrument : Controller.getOrchestra().getInstruments()){
             instrumentInput.addItem(instrument.getName());
         }
         inputComponents.add(instrumentInput);
@@ -265,7 +266,7 @@ public class AddInstrumentFrame extends JFrame {
                     stringedInstrument.setStrings(Integer.parseInt(stringsInput.getText()));
                     stringedInstrument.setIsBow(isBowInput.isSelected());
                     stringedInstrument.setStringBreakChance(Float.parseFloat(stringBreakChanceInput.getText()));
-                    MainFrame.getOrchestra().addInstrument(stringedInstrument);
+                    Controller.getOrchestra().addInstrument(stringedInstrument);
                     break;
                 case 1:
                     KeyboardInstrument keyboardInstrument = new KeyboardInstrument();
@@ -274,7 +275,7 @@ public class AddInstrumentFrame extends JFrame {
                     keyboardInstrument.setNoteRange(minNote, maxNote);
                     JTextField keysInput = (JTextField)inputComponents.get(4);
                     keyboardInstrument.setKeys(Integer.parseInt(keysInput.getText()));
-                    MainFrame.getOrchestra().addInstrument(keyboardInstrument);
+                    Controller.getOrchestra().addInstrument(keyboardInstrument);
                     break;
                 case 2:
                     WindInstrument windInstrument = new WindInstrument();
@@ -287,7 +288,7 @@ public class AddInstrumentFrame extends JFrame {
                     windInstrument.setMaterial(materialInput.getText());
                     windInstrument.setType(typeInput.getText());
                     windInstrument.setNotEnoughBreathChance(Float.parseFloat(chanceInput.getText()));
-                    MainFrame.getOrchestra().addInstrument(windInstrument);
+                    Controller.getOrchestra().addInstrument(windInstrument);
                     break;
             }
         }
@@ -304,7 +305,7 @@ public class AddInstrumentFrame extends JFrame {
                         if(soundInput.isSelected())
                             instrument.addSound(new NonNoteSound(NonNoteSound.getPossibleSounds().get(i)));
                     }
-                    MainFrame.getOrchestra().addInstrument(instrument);
+                    Controller.getOrchestra().addInstrument(instrument);
                     break;
 
                 case 4:
@@ -316,8 +317,8 @@ public class AddInstrumentFrame extends JFrame {
                     musician.setName(musicianNameInput.getText());
                     musician.setAge(Integer.parseInt(musicianAgeInput.getText()));
                     musician.setJoiningOrchestraYear(Integer.parseInt(musicianJoiningYearInput.getText()));
-                    musician.setInstrument(MainFrame.getOrchestra().getInstruments().get(musicianInstrumentInput.getSelectedIndex()));
-                    MainFrame.getOrchestra().addMusician(musician);
+                    musician.setInstrument(Controller.getOrchestra().getInstruments().get(musicianInstrumentInput.getSelectedIndex()));
+                    Controller.getOrchestra().addMusician(musician);
                     break;
             }
         }

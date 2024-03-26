@@ -1,7 +1,6 @@
-package Logic;
+package Model;
 
 public class WindInstrument extends NoteInstrument {
-
     private String material; // Материал инструмента
     private String type; // Тип инструмента
     private float notEnoughBreathChance; // Шанс того, что музыканту не хватит дыхания

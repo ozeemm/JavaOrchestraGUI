@@ -1,17 +1,16 @@
-package GUI;
+package Controller;
 
-import Logic.*;
+import Model.*;
+import View.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class Controller {
-    private Orchestra orchestra;
+    private static Orchestra orchestra;
     private MainFrame mainFrame;
-    private MainMenuPanel mainMenuPanel;
-    private SettingsPanel settingsPanel;
-    private InfoPanel instrumentsInfoPanel;
-    private InfoPanel musiciansInfoPanel;
+
+    public static Orchestra getOrchestra(){ return orchestra; }
 
     private void initTestData(){
         orchestra = new Orchestra();
@@ -167,27 +166,16 @@ public class Controller {
         initTestData();
         
         mainFrame = new MainFrame();
-        mainFrame.setOrchestra(orchestra);
 
-        mainMenuPanel = new MainMenuPanel();
-        mainMenuPanel.setHeaderOrchestraName(orchestra.getSettings().getName());
-        mainMenuPanel.getPlayButton().addActionListener(e -> { new PlayTogetherFrame(); });
-        mainMenuPanel.getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
-        mainMenuPanel.getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
-        mainMenuPanel.getSettingsButton().addActionListener(e -> { openSettings(); });
+        mainFrame.getMainMenuPanel().getInstrumentsButton().addActionListener(e -> { openInstrumentsInfo(); });
+        mainFrame.getMainMenuPanel().getMusiciansButton().addActionListener(e -> { openMusiciansInfo(); });
+        mainFrame.getMainMenuPanel().getSettingsButton().addActionListener(e -> { openSettings(); });
 
-        settingsPanel = new SettingsPanel();
-        settingsPanel.getBackButton().addActionListener(e -> {closeSettings();});
+        mainFrame.getSettingsPanel().getBackButton().addActionListener(e -> {closeSettings();});
 
-        instrumentsInfoPanel = new InfoPanel(true);
-        instrumentsInfoPanel.getBackButton().addActionListener(e -> { closeInstrumentsInfo(); });
+        mainFrame.getInstrumentsInfoPanel().getBackButton().addActionListener(e -> { closeInstrumentsInfo(); });
 
-        musiciansInfoPanel = new InfoPanel(false);
-        musiciansInfoPanel.getBackButton().addActionListener(e -> { closeMusiciansInfo(); });
-
-        mainFrame.add(mainMenuPanel);
-        mainFrame.revalidate();
-        mainFrame.repaint();
+        mainFrame.getMusiciansInfoPanel().getBackButton().addActionListener(e -> { closeMusiciansInfo(); });
     }
 
     private void switchPanels(JFrame frame, JPanel panelToOpen, JPanel panelToClose){
@@ -197,23 +185,23 @@ public class Controller {
         frame.repaint();
     }
     public void openSettings(){
-        switchPanels(mainFrame, settingsPanel, mainMenuPanel);
-        settingsPanel.showSettingsValues(orchestra.getSettings());
+        switchPanels(mainFrame, mainFrame.getSettingsPanel(), mainFrame.getMainMenuPanel());
+        mainFrame.getSettingsPanel().showSettingsValues(orchestra.getSettings());
     }
     public void closeSettings(){
-        switchPanels(mainFrame, mainMenuPanel, settingsPanel);
-        mainMenuPanel.setHeaderOrchestraName(orchestra.getSettings().getName());
+        switchPanels(mainFrame, mainFrame.getMainMenuPanel(), mainFrame.getSettingsPanel());
+        mainFrame.getMainMenuPanel().setHeaderOrchestraName(orchestra.getSettings().getName());
     }
     public void openInstrumentsInfo() {
-        switchPanels(mainFrame, instrumentsInfoPanel, mainMenuPanel);
-        instrumentsInfoPanel.onInstrumentsInfoOpened();
+        switchPanels(mainFrame, mainFrame.getInstrumentsInfoPanel(), mainFrame.getMainMenuPanel());
+        mainFrame.getInstrumentsInfoPanel().onInstrumentsInfoOpened();
     }
-    public void closeInstrumentsInfo(){ switchPanels(mainFrame, mainMenuPanel, instrumentsInfoPanel); }
+    public void closeInstrumentsInfo(){ switchPanels(mainFrame, mainFrame.getMainMenuPanel(), mainFrame.getInstrumentsInfoPanel()); }
     public void openMusiciansInfo(){
-        switchPanels(mainFrame, musiciansInfoPanel, mainMenuPanel);
-        musiciansInfoPanel.onMusiciansInfoOpened();
+        switchPanels(mainFrame, mainFrame.getMusiciansInfoPanel(), mainFrame.getMainMenuPanel());
+        mainFrame.getMusiciansInfoPanel().onMusiciansInfoOpened();
     }
     public void closeMusiciansInfo(){
-        switchPanels(mainFrame, mainMenuPanel, musiciansInfoPanel);
+        switchPanels(mainFrame, mainFrame.getMainMenuPanel(), mainFrame.getMusiciansInfoPanel());
     }
 }

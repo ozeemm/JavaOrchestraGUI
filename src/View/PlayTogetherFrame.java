@@ -1,9 +1,10 @@
-package GUI;
+package View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Controller.*;
 
 public class PlayTogetherFrame extends JFrame {
     private JLabel playingLabel;
@@ -40,10 +41,10 @@ public class PlayTogetherFrame extends JFrame {
         orchestraPlay();
     }
     private void orchestraPlay(){
-        Timer timer = new Timer(MainFrame.getOrchestra().getSettings().getSongSoundsDelay(), new ActionListener() {
+        Timer timer = new Timer(Controller.getOrchestra().getSettings().getSongSoundsDelay(), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playingLabel.setText(MainFrame.getOrchestra().playSound());
+                playingLabel.setText(Controller.getOrchestra().playSound());
             }
         });
 

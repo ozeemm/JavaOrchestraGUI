@@ -1,6 +1,7 @@
-package GUI;
+package View;
 
-import Logic.*;
+import Model.*;
+import Controller.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,22 +78,6 @@ public class InfoPanel extends JPanel {
         if(!isInstrumentsInfo)
             tableRows = 4;
         infoTable = new JTable(tableRows, tableCols);
-        /*infoTable.setModel(new AbstractTableModel() {
-            @Override
-            public int getRowCount() {
-                return 0;
-            }
-
-            @Override
-            public int getColumnCount() {
-                return 0;
-            }
-
-            @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
-                return null;
-            }
-        }); */
         infoTable.setFont(new Font("Arial", Font.PLAIN, 17));
         infoTable.setRowHeight(40);
         infoTable.getColumnModel().getColumn(0).setMinWidth(200);
@@ -153,7 +138,7 @@ public class InfoPanel extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownInstruments = new ArrayList<MusicInstrument>();
 
-        for(MusicInstrument instrument : MainFrame.getOrchestra().getInstruments()){
+        for(MusicInstrument instrument : Controller.getOrchestra().getInstruments()){
             switch (currentInstrumentType){
                 case 0: // Струнные
                     if(instrument instanceof StringedInstrument){
@@ -201,7 +186,7 @@ public class InfoPanel extends JPanel {
         row++;
         if(currentInstrument instanceof NoteInstrument){
             NoteInstrument noteInstrument = (NoteInstrument) currentInstrument;
-            boolean isRuNotes = MainFrame.getOrchestra().getSettings().getIsRuNotes();
+            boolean isRuNotes = Controller.getOrchestra().getSettings().getIsRuNotes();
             tableData.add(new ArrayList<String>());
             tableData.get(row).add("Минимальная нота");
             tableData.get(row).add(isRuNotes ? noteInstrument.getMinNote().toRuString() : noteInstrument.getMinNote().toString());
@@ -317,7 +302,7 @@ public class InfoPanel extends JPanel {
         });
     }
     private void deleteInstrumentClicked(){
-        MainFrame.getOrchestra().deleteInstrument(currentInstrument);
+        Controller.getOrchestra().deleteInstrument(currentInstrument);
         onInstrumentTypeChange();
     }
 
@@ -342,7 +327,7 @@ public class InfoPanel extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownMusicians = new ArrayList<Musician>();
 
-        for(Musician musician : MainFrame.getOrchestra().getMusicians()){
+        for(Musician musician : Controller.getOrchestra().getMusicians()){
             switch(currentInstrumentType){
                 case 0: // Все
                     shownMusicians.add(musician);
@@ -391,6 +376,7 @@ public class InfoPanel extends JPanel {
                 infoTable.setValueAt(tableData[i][j], i, j);
             }
         }
+
         clearPlaySoundLabel();
     }
     private void addMusicianClicked(){
@@ -403,12 +389,12 @@ public class InfoPanel extends JPanel {
         });
     }
     private void deleteMusicianClicked(){
-        MainFrame.getOrchestra().deleteMusicican(currentMusician);
+        Controller.getOrchestra().deleteMusicican(currentMusician);
         onMusiciansInstrumentTypeChange();
     }
 
     public void playInstrumentButtonClicked(){
-        String sound = currentInstrument.orchestraPlay(MainFrame.getOrchestra().getSettings().getIsRuNotes());
+        String sound = currentInstrument.orchestraPlay(Controller.getOrchestra().getSettings().getIsRuNotes());
         if(sound != null){
             if(currentInstrument instanceof NoteInstrument)
                 playSoundLabel.setText("Сыграна нота " + sound + " октавы");

@@ -1,4 +1,4 @@
-package Logic;
+package Model;
 
 public abstract class NoteInstrument extends MusicInstrument{
     private Note minNote;

@@ -1,9 +1,10 @@
-package GUI;
+package View;
 
-import Logic.OrchestraSettings;
+import Model.OrchestraSettings;
 
 import javax.swing.*;
 import java.awt.*;
+import Controller.*;
 
 public class SettingsPanel extends JPanel {
     private JPanel headerPanel;
@@ -96,6 +97,6 @@ public class SettingsPanel extends JPanel {
         orchestraSettings.setName(orchestraNameInput.getText());
         orchestraSettings.setIsRuNotes(noteFormatInput.getSelectedIndex() == 1);
         orchestraSettings.setSongSoundsDelay(Integer.parseInt(songSoundsDelayInput.getText()));
-        MainFrame.getOrchestra().setSettings(orchestraSettings);
+        Controller.getOrchestra().setSettings(orchestraSettings);
     }
 }
