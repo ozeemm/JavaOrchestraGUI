@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Controller {
     private static Orchestra orchestra;
     private MainFrame mainFrame;
-
     public static Orchestra getOrchestra(){ return orchestra; }
 
     private void initTestData(){
