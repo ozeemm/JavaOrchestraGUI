@@ -97,6 +97,6 @@ public class SettingsPanel extends JPanel {
         orchestraSettings.setName(orchestraNameInput.getText());
         orchestraSettings.setIsRuNotes(noteFormatInput.getSelectedIndex() == 1);
         orchestraSettings.setSongSoundsDelay(Integer.parseInt(songSoundsDelayInput.getText()));
-        Controller.getOrchestra().setSettings(orchestraSettings);
+        Controller.getRepository().setSettings(orchestraSettings);
     }
 }

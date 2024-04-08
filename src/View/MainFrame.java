@@ -1,11 +1,9 @@
 package View;
 
-import Model.*;
 import Controller.*;
 
 import javax.swing.*;
 import javax.swing.ImageIcon; // Чтобы добавить иконку
-import java.awt.*;
 
 public class MainFrame extends JFrame {
     private MainMenuPanel mainMenuPanel;
@@ -28,7 +26,7 @@ public class MainFrame extends JFrame {
         this.setIconImage(icon.getImage()); // Иконка окна
 
         mainMenuPanel = new MainMenuPanel();
-        mainMenuPanel.setHeaderOrchestraName(Controller.getOrchestra().getSettings().getName());
+        mainMenuPanel.setHeaderOrchestraName(Controller.getRepository().getSettings().getName());
         mainMenuPanel.getPlayButton().addActionListener(e -> { new PlayTogetherFrame(); });
         settingsPanel = new SettingsPanel();
         instrumentsInfoPanel = new InfoPanel(true);

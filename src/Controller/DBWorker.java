@@ -1,13 +1,9 @@
 package Controller;
 
 import Model.*;
-import sun.security.krb5.internal.Krb5;
 
-import javax.sound.midi.Instrument;
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.MissingFormatArgumentException;
 import java.util.Properties;
 
 public class DBWorker {
@@ -203,8 +199,7 @@ public class DBWorker {
                 table.close();
 
                 if(instrument instanceof StringedInstrument){
-                    //instrumentType = "stringed";
-                    StringedInstrument stringedInstrument = new StringedInstrument();
+                    StringedInstrument stringedInstrument = (StringedInstrument)instrument;
                     query = "INSERT INTO stringed_instruments(note_instrument_id, strings, frets, bow, string_break_chance) VALUES(?, ?, ?, ?, ?)";
                     preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setInt(1, noteInstrumentId);
@@ -215,8 +210,7 @@ public class DBWorker {
                     preparedStatement.execute();
                 }
                 else if(instrument instanceof KeyboardInstrument){
-                    //instrumentType = "keyboard";
-                    KeyboardInstrument keyboardInstrument = new KeyboardInstrument();
+                    KeyboardInstrument keyboardInstrument = (KeyboardInstrument)instrument;
                     query = "INSERT INTO keyboard_instruments(note_instrument_id, keys) VALUES(?, ?)";
                     preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setInt(1, noteInstrumentId);
@@ -224,8 +218,7 @@ public class DBWorker {
                     preparedStatement.execute();
 
                 } else if(instrument instanceof WindInstrument){
-                    //instrumentType = "wind";
-                    WindInstrument windInstrument = new WindInstrument();
+                    WindInstrument windInstrument = (WindInstrument)instrument;
                     query = "INSERT INTO wind_instruments(note_instrument_id, material, type, not_enough_breath_chance) VALUES(?, ?, ?, ?)";
                     preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setInt(1, noteInstrumentId);
@@ -236,7 +229,6 @@ public class DBWorker {
                 }
             }
             else{
-                //instrumentType = "non_note";
                 NonNoteInstrument nonNoteInstrument = (NonNoteInstrument)instrument;
                 StringBuilder sounds = new StringBuilder();
                 for(int i = 0; i < nonNoteInstrument.getSounds().size(); i++){
@@ -252,12 +244,6 @@ public class DBWorker {
                 table.close();
 
             }
-            /*query = "UPDATE music_instruments SET type=? WHERE id=?";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, instrumentType);
-            preparedStatement.setInt(2, instrument.getId());
-            preparedStatement.execute();*/
-
             preparedStatement.close();
 
         } catch(SQLException e){ e.printStackTrace(); }

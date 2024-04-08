@@ -138,7 +138,7 @@ public class InfoPanel extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownInstruments = new ArrayList<MusicInstrument>();
 
-        for(MusicInstrument instrument : Controller.getOrchestra().getInstruments()){
+        for(MusicInstrument instrument : Controller.getRepository().getInstruments()){
             switch (currentInstrumentType){
                 case 0: // Струнные
                     if(instrument instanceof StringedInstrument){
@@ -186,7 +186,7 @@ public class InfoPanel extends JPanel {
         row++;
         if(currentInstrument instanceof NoteInstrument){
             NoteInstrument noteInstrument = (NoteInstrument) currentInstrument;
-            boolean isRuNotes = Controller.getOrchestra().getSettings().getIsRuNotes();
+            boolean isRuNotes = Controller.getRepository().getSettings().getIsRuNotes();
             tableData.add(new ArrayList<String>());
             tableData.get(row).add("Минимальная нота");
             tableData.get(row).add(isRuNotes ? noteInstrument.getMinNote().toRuString() : noteInstrument.getMinNote().toString());
@@ -302,7 +302,7 @@ public class InfoPanel extends JPanel {
         });
     }
     private void deleteInstrumentClicked(){
-        Controller.getOrchestra().deleteInstrument(currentInstrument);
+        Controller.getRepository().deleteInstrument(currentInstrument);
         onInstrumentTypeChange();
     }
 
@@ -327,7 +327,7 @@ public class InfoPanel extends JPanel {
         currentInstrumentType = instrumentTypeChoose.getSelectedIndex();
         shownMusicians = new ArrayList<Musician>();
 
-        for(Musician musician : Controller.getOrchestra().getMusicians()){
+        for(Musician musician : Controller.getRepository().getMusicians()){
             switch(currentInstrumentType){
                 case 0: // Все
                     shownMusicians.add(musician);
@@ -389,12 +389,12 @@ public class InfoPanel extends JPanel {
         });
     }
     private void deleteMusicianClicked(){
-        Controller.getOrchestra().deleteMusicican(currentMusician);
+        Controller.getRepository().deleteMusician(currentMusician);
         onMusiciansInstrumentTypeChange();
     }
 
     public void playInstrumentButtonClicked(){
-        String sound = currentInstrument.orchestraPlay(Controller.getOrchestra().getSettings().getIsRuNotes());
+        String sound = currentInstrument.orchestraPlay(Controller.getRepository().getSettings().getIsRuNotes());
         if(sound != null){
             if(currentInstrument instanceof NoteInstrument)
                 playSoundLabel.setText("Сыграна нота " + sound + " октавы");

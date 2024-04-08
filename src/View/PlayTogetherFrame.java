@@ -33,7 +33,7 @@ public class PlayTogetherFrame extends JFrame {
         this.add(playingLabel);
 
         JButton closeButton = new JButton("Закрыть");
-        closeButton.addActionListener(e -> { this.dispose(); });
+        closeButton.addActionListener(e -> this.dispose());
         closeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(Box.createVerticalStrut(15));
         this.add(closeButton);
@@ -41,10 +41,10 @@ public class PlayTogetherFrame extends JFrame {
         orchestraPlay();
     }
     private void orchestraPlay(){
-        Timer timer = new Timer(Controller.getOrchestra().getSettings().getSongSoundsDelay(), new ActionListener() {
+        Timer timer = new Timer(Controller.getRepository().getSettings().getSongSoundsDelay(), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                playingLabel.setText(Controller.getOrchestra().playSound());
+                playingLabel.setText(Controller.getRepository().getOrchestra().playSound());
             }
         });
 
